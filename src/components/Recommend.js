@@ -14,7 +14,12 @@ const Recommend = () => {
         axios.get(`http://localhost:3001/instruction/${userId}`).then((res) => {
             if (res?.data?.success) {
                 console.log("Instruction fetched : ", res?.data?.instruction)
-                setInstruction(res?.data?.instruction)
+                if (res?.data?.instruction !== undefined) {
+                    setInstruction(res?.data?.instruction)
+                }
+                else {
+                    alert("No user data available pls fill form first.")
+                }
                 // setInstruction("I'm a tall, athletic man with broad shoulders and a narrow waist. I prefer sharp, tailored suits that highlight my V-shaped torso.")
             }
             else {
@@ -29,31 +34,36 @@ const Recommend = () => {
 
     const handleGenerate = async () => {
         console.log("Clicked");
-        setIsLoading(true); // Start loading
-
-        try {
-            console.log("Input : ", input);
-
-            const res1 = await axios.post("http://127.0.0.1:8000/recommend", null, {
-                params: {
-                    instruction: instruction,
-                    event: input,
-                },
-            });
-
-            console.log("Recommended outfit : ", res1?.data);
-            setRecommendedOutfit(res1?.data?.recommendation);
-
-            const res2 = await axios.post("http://127.0.0.1:8000/generate", { outfit: res1?.data?.recommendation });
-
-            console.log("GENERATED IMAGE URL: ", res2?.data?.image_url);
-            setGeneratedUrl(res2?.data?.image_url);
+        if (instruction === undefined || instruction === "") {
+            alert("No user data available pls fill form first.");
+            setIsLoading(false);
         }
-        catch (err) {
-            console.log("Error : ", err);
-        }
-        finally {
-            setIsLoading(false); // Stop loading only after everything completes
+        else {
+            setIsLoading(true); // Start loading
+            try {
+                console.log("Input : ", input);
+
+                const res1 = await axios.post("http://127.0.0.1:8000/recommend", null, {
+                    params: {
+                        instruction: instruction,
+                        event: input,
+                    },
+                });
+
+                console.log("Recommended outfit : ", res1?.data);
+                setRecommendedOutfit(res1?.data?.recommendation);
+
+                const res2 = await axios.post("http://127.0.0.1:8000/generate", { outfit: res1?.data?.recommendation });
+
+                console.log("GENERATED IMAGE URL: ", res2?.data?.image_url);
+                setGeneratedUrl(res2?.data?.image_url);
+            }
+            catch (err) {
+                console.log("Error : ", err);
+            }
+            finally {
+                setIsLoading(false); // Stop loading only after everything completes
+            }
         }
     };
 
@@ -110,7 +120,7 @@ const Recommend = () => {
                             setIsLoading(true);
                             handleGenerate(); // Call the function properly
                         }}
-                        disabled={isLoading}
+                        disabled={isLoading || instruction === undefined}
                         style={{
                             padding: "0.75rem 1.5rem",
                             backgroundColor: isLoading ? "#333" : "#000",
@@ -168,7 +178,7 @@ const Recommend = () => {
                             }}
                         />
                     ) : generatedUrl ? (
-                        <div style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                        <div style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                             <img src={generatedUrl} width="100%" height="100%" alt="generated image" />
                             <p>{recommendedOutfit.replace(/^Outfit Combination \d+: -\s*/, "")}</p>
                         </div>
