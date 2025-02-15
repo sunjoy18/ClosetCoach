@@ -1,0 +1,68 @@
+.landing-container {
+  text-align: center;
+}
+
+.header {
+  background: dodgerblue;
+  color: white;
+  padding: 100px 20px 20px 20px;
+}
+
+.logo {
+  font-size: 36px;
+  margin: 0;
+}
+
+.tagline {
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+.about {
+  margin: 40px auto;
+  max-width: 600px;
+  color: black;
+}
+
+.features {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin: 40px 0;
+}
+
+.feature {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 300px;
+}
+
+.footer {
+  margin-top: 50px;
+  background: dodgerblue;
+  color: white;
+  padding: 20px;
+}
+.cta-button {
+  background: white;
+  color: dodgerblue;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+.cta-button:hover {
+  background: white;
+  color: dodgerblue;
+  border: 1px solid white;
+}
+
+a {
+  text-decoration: none;
+}
